@@ -8,12 +8,13 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.min.css";
 
 import App from "@/App.vue";
+import { i18n } from "@/i18n";
 
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
-import Times from "@/times/Times.vue";
-import Links from "@/links/Links.vue";
-import Notes from "@/notes/Notes.vue";
+import Times from "@/components/times/Times.vue";
+import Links from "@/components/links/Links.vue";
+import Notes from "@/components/notes/Notes.vue";
 
 const comps = [
   { name: "app-times", item: Times },
@@ -25,5 +26,6 @@ const comps = [
 
 const app = createApp(App);
 app.use(PrimeVue);
+app.use(i18n);
 comps.forEach(comp => app.component(comp.name, comp.item));
 app.mount('#app');

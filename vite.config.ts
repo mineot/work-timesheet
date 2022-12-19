@@ -59,7 +59,7 @@ export default defineConfig({
             minify: isBuild,
             outDir: 'dist-electron/main',
             rollupOptions: {
-              external: Object.keys(pkg.dependencies),
+              external: Object.keys(pkg.devDependencies),
             },
           },
           plugins: [loadEnvPlugin()],
@@ -78,7 +78,7 @@ export default defineConfig({
             minify: isBuild,
             outDir: 'dist-electron/preload',
             rollupOptions: {
-              external: Object.keys(pkg.dependencies),
+              external: Object.keys(pkg.devDependencies),
             },
           },
         },
