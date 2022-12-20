@@ -16,7 +16,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "electron": "^22.0.0",
-    "electron-builder": "^22.10.3",
+    "electron-builder": "^23.6.0",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.21.0",
