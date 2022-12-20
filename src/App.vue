@@ -1,7 +1,7 @@
 <template>
   <p-tab-view>
     <p-tab-panel header="Times">
-      <app-times></app-times>
+      <app-registers></app-registers>
     </p-tab-panel>
     <p-tab-panel header="Links">
       <app-links></app-links>

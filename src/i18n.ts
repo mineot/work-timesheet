@@ -1,16 +1,18 @@
-// @ts-check
-
 import { createI18n } from "vue-i18n";
-import { pt } from "@/locales/pt";
-import { en } from "@/locales/en";
+import pt from "locales/pt";
+import en from "locales/en";
 
-const messages = { en, pt };
+const messages = {
+  en,
+  pt,
+  "en-us": en,
+  "pt-br": pt,
+};
 
-console.log(messages);
-console.log(navigator.language)
+const language = navigator.language.toLowerCase();
 
-export const i18n = createI18n({
-  locale: "en",
+export default createI18n({
+  locale: language,
   fallbackLocale: "en",
-  messages
+  messages,
 });

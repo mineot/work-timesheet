@@ -14,17 +14,13 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
+  "include": ["./src/"],
   "paths": {
-    "@/*": [
-      "./src/*"
-    ],
-  }
+    "src/*": ["./src/*"],
+    "locales/*": ["./src/locales/*"],
+    "components/*": ["./src/components/*"]
+  },
+  "references": [{
+    "path": "./tsconfig.node.json"
+  }]
 }

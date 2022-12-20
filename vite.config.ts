@@ -37,7 +37,9 @@ function loadEnvPlugin(): Plugin {
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
+      'src': path.resolve(__dirname, './src'),
+      'locales': path.resolve(__dirname, './src/locales'),
+      'components': path.resolve(__dirname, './src/components')
     },
   },
   plugins: [
