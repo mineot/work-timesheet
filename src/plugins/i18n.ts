@@ -1,6 +1,6 @@
 import { createI18n } from "vue-i18n";
-import pt from "locales/pt";
-import en from "locales/en";
+import pt from "./locales/pt.json";
+import en from "./locales/en.json";
 
 const messages = {
   en,
@@ -9,10 +9,8 @@ const messages = {
   "pt-br": pt,
 };
 
-const language = navigator.language.toLowerCase();
-
 export default createI18n({
-  locale: language,
+  locale: navigator.language.toLowerCase(),
   fallbackLocale: "en",
   messages,
 });

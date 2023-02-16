@@ -1,17 +1,3 @@
 <template>
-  <p-tab-view>
-    <p-tab-panel header="Times">
-      <app-registers></app-registers>
-    </p-tab-panel>
-    <p-tab-panel header="Links">
-      <app-links></app-links>
-    </p-tab-panel>
-    <p-tab-panel header="Notes">
-      <app-notes></app-notes>
-    </p-tab-panel>
-  </p-tab-view>
+  <h1>Work TimeSheet</h1>
 </template>
-
-<script lang="ts">
-export default {};
-</script>

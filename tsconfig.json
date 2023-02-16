@@ -16,9 +16,8 @@
   },
   "include": ["./src/"],
   "paths": {
-    "src/*": ["./src/*"],
-    "locales/*": ["./src/locales/*"],
-    "components/*": ["./src/components/*"]
+    "@/*": ["./src/*"],
+    "@plugins/*": ["./src/plugins/*"],
   },
   "references": [{
     "path": "./tsconfig.node.json"

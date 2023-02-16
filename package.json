@@ -1,6 +1,6 @@
 {
   "name": "work-timesheet",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist-electron/main/index.js",
   "description": "Really simple Electron + Vue + Vite boilerplate.",
   "author": "",
@@ -17,9 +17,6 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
-    "primeflex": "^3.3.0",
-    "primeicons": "^6.0.1",
-    "primevue": "^3.21.0",
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.4",
     "vite": "^4.0.2",
