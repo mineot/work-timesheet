@@ -4,6 +4,7 @@
       <v-toolbar-title>{{ $t("app-title") }}</v-toolbar-title>
       <template v-slot:append>
         <v-btn to="/" icon="mdi-home"></v-btn>
+        <v-btn to="/job" icon="mdi-calendar-clock"></v-btn>
       </template>
     </v-app-bar>
     <v-main>
