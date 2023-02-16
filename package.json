@@ -40,5 +40,8 @@
     "vite",
     "vue3",
     "vue"
-  ]
+  ],
+  "dependencies": {
+    "alasql": "^3.1.0"
+  }
 }

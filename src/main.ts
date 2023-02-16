@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import I18N from "@plugins/i18n";
 import vuetify from "@plugins/vuetify";
 import router from "@plugins/router";
+import InitDB from "@plugins/init-db";
 
 import App from "@/App.vue";
 
@@ -10,3 +11,5 @@ app.use(I18N);
 app.use(vuetify);
 app.use(router);
 app.mount("#app");
+
+InitDB();
