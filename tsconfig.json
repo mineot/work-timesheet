@@ -19,6 +19,7 @@
     "@/*": ["./src/*"],
     "@plugins/*": ["./src/plugins/*"],
     "@pages/*": ["./src/pages/*"],
+    "@model/*": ["./src/model/*"],
   },
   "references": [{
     "path": "./tsconfig.node.json"
