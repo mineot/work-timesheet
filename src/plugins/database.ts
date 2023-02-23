@@ -1,11 +1,10 @@
-import initSqlJs from "sql.js";
-import "sql.js/dist/sql-wasm";
+const initSqlJs = require("sql.js");
 
 let DB: any = undefined;
 
 const InitDB = async function () {
   const SQL = await initSqlJs({
-    locateFile: file => `assets/${file}`
+    locateFile: () => "assets/db.sqlite"
   });
 
   DB = new SQL.Database();
