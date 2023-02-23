@@ -1,13 +1,21 @@
-const initSqlJs = require("sql.js");
+import fs from "fs";
 
-let DB: any = undefined;
+const dbName = "assets/db.json";
+let DB: any = { tables: [] };
 
-const InitDB = async function () {
-  const SQL = await initSqlJs({
-    locateFile: () => "assets/db.sqlite"
-  });
-
-  DB = new SQL.Database();
+const Store = () => {
+  fs.writeFileSync(
+    dbName,
+    JSON.stringify(DB)
+  );
 };
 
-export { InitDB, DB };
+const Restore = () => {
+  console.log(fs);
+  DB = JSON.parse(fs.readFileSync(
+    dbName,
+    "utf8"
+  ));
+};
+
+export { Restore, Store, DB };
