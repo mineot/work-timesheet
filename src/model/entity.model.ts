@@ -1,4 +1,4 @@
-import { DB } from "@plugins/database";
+import { DB } from "@/plugins/database";
 
 export enum ColumnType {
   STRING = "string",
@@ -81,7 +81,7 @@ export class EntityModel {
   }
 
   private createTable(): void {
-    const columnTable: string = ["id UUID AUTOINCREMENT PRIMARY KEY"].concat(
+    const columnTable: string = ["id number autoincrement primary key"].concat(
       this.attrs.tableColumns.map((column: EntityColumn) => `${column.name} ${column.type}`)
     ).join(",");
 

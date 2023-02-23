@@ -1,8 +1,14 @@
-const dbName = "__wtsdb";
+import initSqlJs from "sql.js";
+import "sql.js/dist/sql-wasm";
 
-const InitDB = function (): void {
+let DB: any = undefined;
 
+const InitDB = async function () {
+  const SQL = await initSqlJs({
+    locateFile: file => `assets/${file}`
+  });
+
+  DB = new SQL.Database();
 };
 
-export { InitDB };
-
+export { InitDB, DB };
