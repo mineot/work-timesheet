@@ -8,6 +8,8 @@ import vue from '@vitejs/plugin-vue';
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';
 import pkg from './package.json';
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
 rmSync('dist-electron', { recursive: true, force: true });
 const sourcemap = !!process.env.VSCODE_DEBUG;
@@ -45,6 +47,8 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    wasm(),
+    topLevelAwait(),
     electron([
       {
         // Main-Process entry file of the Electron App.

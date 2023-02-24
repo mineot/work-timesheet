@@ -1,21 +1,13 @@
-import fs from "fs";
+import "sql.js/dist/sql-wasm";
+import initSqlJs from "sql.js";
+let DB = undefined;
 
-const dbName = "assets/db.json";
-let DB: any = { tables: [] };
+const InitDB = async () => {
+  const SQL = await initSqlJs({
+    locateFile: () => "assets/db.sqlite"
+  });
 
-const Store = () => {
-  fs.writeFileSync(
-    dbName,
-    JSON.stringify(DB)
-  );
+  DB = new SQL.Database();
 };
 
-const Restore = () => {
-  console.log(fs);
-  DB = JSON.parse(fs.readFileSync(
-    dbName,
-    "utf8"
-  ));
-};
-
-export { Restore, Store, DB };
+export { InitDB, DB };
