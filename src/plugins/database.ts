@@ -1,41 +1,58 @@
-interface DBData {
-  [teste: string]: any[];
+import { createStore } from "vuex";
+
+const dbTables = ["teste"];
+const dbName = "wtsdb";
+const delay = 60000;
+
+function buildTableName(tableName: string): string {
+  return `${dbName}->${tableName}`;
 }
 
-const delay = 60000;
-const separator = "->";
-const dbName = "wtsdb";
-const dbTables = ["teste"];
-const DB: DBData = {
-  teste: []
+const state = () => ({
+  tables: {}
+});
+
+const mutations = {
+  loadTables(state: any, { key, data }: any) {
+    state.tables[key] = data;
+  }
 };
 
-const InitDB = (): void => {
-  dbTables.forEach((table: string) => {
-    const data: string | null = localStorage.getItem(`${dbName}${separator}${table}`);
-    DB[table] = data ? JSON.parse(data) : [];
-  });
+const actions = {
+  initDB: (act: any) => {
+    dbTables.forEach((key: string) => {
+      const item: string | null = localStorage.getItem(buildTableName(key));
+      const data: any[] = item ? JSON.parse(item) : [];
+      act.commit("loadTables", { key, data });
+    });
 
-  AutoStoreDB();
+    act.dispatch("autoStoreDB");
+  },
+
+  storeTable(act: any, tableName: string) {
+    const data: string = JSON.stringify(act.state.tables[tableName]);
+    localStorage.setItem(buildTableName(tableName), data);
+  },
+
+  storeDB: (act: any) => {
+    dbTables.forEach((key: string) => {
+      act.dispatch("storeTable", key);
+    });
+  },
+
+  autoStoreDB: (act: any) => {
+    setTimeout(() => {
+      act.dispatch("storeDB");
+      act.dispatch("autoStoreDB");
+    }, delay);
+  }
 };
 
-const StoreDB = (): void => {
-  dbTables.forEach((table: string) => {
-    const data: string = JSON.stringify(DB[table]);
-    localStorage.setItem(`${dbName}${separator}${table}`, data);
-  });
-};
+const getters = {};
 
-const StoreTable = (tableName: string): void => {
-  const data: string = JSON.stringify(DB[tableName]);
-  localStorage.setItem(`${dbName}${separator}${tableName}`, data);
-};
-
-const AutoStoreDB = (): void => {
-  setTimeout(() => {
-    StoreDB();
-    AutoStoreDB();
-  }, delay);
-};
-
-export { InitDB, StoreDB, StoreTable, AutoStoreDB, DB };
+export default createStore({
+  state,
+  mutations,
+  actions,
+  getters,
+});
