@@ -1,97 +1,52 @@
-import { DB } from "@/plugins/database";
+import { v4 as uuid } from "uuid";
+import { DB, StoreTable } from "@plugins/database";
 
-export enum ColumnType {
-  STRING = "string",
-  NUMBER = "number",
-  DATE = "date",
-  TIME = "date",
-  BOOL = "number",
+export interface ModelColumn {
+  [name: string]: string;
+  default?: any;
 }
 
-export interface EntityColumn {
-  name: string;
-  type: ColumnType;
-  default: any;
-}
+export abstract class Model {
 
-export class EntityModel {
+  private $tableName: string = "";
+  private $id: string | undefined = undefined;
+  private $columns: any = {};
 
-  private readonly attrs: any = {
-    tableName: "",
-    tableColumns: [],
-    data: {},
-  };
-
-  constructor(tableName: string, tableColumns: EntityColumn[]) {
-    this.attrs.tableName = tableName;
-    this.attrs.tableColumns = tableColumns;
-    this.createTable();
-    this.setDefaults();
-  }
-
-  get id(): number | undefined {
-    return this.attrs.data.id;
-  }
-
-  getData(key: string): any {
-    return this.attrs.data[key];
-  }
-
-  setData(key: string, value: any) {
-    this.attrs.data[key] = value;
-  }
-
-  drop(): void {
-    DB().exec(`DROP TABLE ${this.attrs.tableName};`);
-  }
-
-  save(): void {
-    if (this.id) {
-      // update
-    } else {
-      this.insert();
-    }
-  }
-
-  private insert(): void {
-    DB().exec(`SELECT * INTO ${this.attrs.tableName} FROM ?`, [[this.attrs.data]]);
-    DB().exec("COMMIT;");
-
-    if (!this.id) {
-      const table: any = DB().tables[this.attrs.tableName];
-      this.attrs.data["id"] = table.identities.id.value - 1;
-      console.log(this.attrs.data);
-    }
-  }
-
-  private update(): void {
-    // UPDATE ????
-  }
-
-  private delete(): void {
-    // delete ????
-  }
-
-  static select(): void {
-    // SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC
-  }
-
-  static get(): void {
-    /// ????
-  }
-
-  private createTable(): void {
-    const columnTable: string = ["id number autoincrement primary key"].concat(
-      this.attrs.tableColumns.map((column: EntityColumn) => `${column.name} ${column.type}`)
-    ).join(",");
-
-    DB().exec(`CREATE TABLE IF NOT EXISTS ${this.attrs.tableName} (${columnTable})`);
-  }
-
-  private setDefaults(): void {
-    this.attrs.tableColumns.forEach((column: EntityColumn) => {
-      this.attrs.data[column.name] = column.default;
+  constructor(tableName: string, columns: ModelColumn[]) {
+    this.$tableName = tableName;
+    columns.forEach((col: ModelColumn) => {
+      this.$columns[col.name] = col.default || null;
     });
+  }
+
+  // ID
+
+  get id(): string | undefined {
+    return this.$id;
+  }
+
+  // SAVE 
+
+  save() {
+    if (this.id) {
+      const index: number | undefined | null = this.db.findIndex((el: Model) => el.id === this.id);
+      this.db.splice(index, 1);
+    } else {
+      this.$id = uuid();
+    }
+
+    this.db.push(this);
+    this.dbStore();
+  }
+
+  // HELPERS
+
+  private get db(): Model[] {
+    return DB[this.$tableName] as Model[];
+  }
+
+  private dbStore(): void {
+    StoreTable(this.$tableName);
   }
 
 }
