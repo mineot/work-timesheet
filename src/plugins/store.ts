@@ -37,7 +37,7 @@ const mutations = {
   delete(state: any, { tableName, item }: any) {
     const index: number | undefined | null = findByIndex(state.tables[tableName], item);
 
-    if (index) {
+    if (index !== undefined && index !== null && index > -1) {
       state.tables[tableName].splice(index, 1);
     }
   },

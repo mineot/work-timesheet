@@ -20,6 +20,9 @@ store.dispatch("initDB");
 // store.dispatch("save", { tableName: "teste", item: { name: "Item 3" } });
 
 // store.dispatch("save", { tableName: "teste", item: { name: "Item ABC", id: "c1a09d5e-190d-4b50-9492-ff04ef23eeeb" } });
+
+// store.dispatch("delete", { tableName: "teste", item: { name: "Item ABC", id: "c1a09d5e-190d-4b50-9492-ff04ef23eeeb" } });
 // store.dispatch("storeDB");
 
 console.log(store.getters.all("teste"));
+console.log(store.getters.get("teste", "a579eee1-00ff-4d95-a04a-f040b18f382a"));
