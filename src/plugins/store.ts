@@ -29,9 +29,8 @@ const mutations = {
   update(state: any, { tableName, item }: any) {
     const index: number | undefined | null = findByIndex(state.tables[tableName], item);
 
-    if (index) {
-      state.tables[tableName].splice(index, 1);
-      state.tables[tableName].push(item);
+    if (index !== undefined && index !== null && index > -1) {
+      state.tables[tableName][index] = item;
     }
   },
 
@@ -74,9 +73,12 @@ const actions = {
   },
 
   save: (act: any, { tableName, item }: any) => {
-    const mut: string = item.id ? "insert" : "update";
-    item.id = item.id ? uuid() : item.id;
-    act.commit(mut, { tableName, item });
+    let mutation = "update";
+    if (item.id === undefined) {
+      mutation = "insert";
+      item.id = uuid();
+    }
+    act.commit(mutation, { tableName, item });
   },
 
   delete: (act: any, { tableName, item }: any) => {
