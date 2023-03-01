@@ -1,15 +1,13 @@
-import { MutationItem, MutationTable, ParamGetById, ParamTableName, State } from "./facades";
-import { findItemById, findTable } from "./helpers";
+import { ParamGetRowById, ParamTable, State, Table, TableRow } from "./facades";
+import { findRow, findTable } from "./helpers";
 
 export default {
-  all: (state: State) => (param: ParamTableName): MutationItem[] => {
-    const table: MutationTable | undefined = findTable(state, param);
-    return table?.items || [];
+  getTable: (state: State) => (param: ParamTable): Table | undefined => {
+    return findTable(state, param);
   },
 
-  get: (state: State) => (param: ParamGetById): MutationItem | undefined => {
-    const table: MutationTable | undefined = findTable(state, param);
-    const item: MutationItem | undefined = findItemById(table, param);
-    return item;
+  get: (state: State) => (param: ParamGetRowById): TableRow | undefined => {
+    const table: Table | undefined = findTable(state, param);
+    return findRow(table, param);
   },
 };

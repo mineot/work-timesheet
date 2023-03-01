@@ -1,31 +1,32 @@
-import { MutationItem, MutationTable, ParamMutationDelete, ParamMutationSave, ParamRecoverTables, State } from "./facades";
-import { findItemById, findTable } from "./helpers";
+import { ParamMutationDelete, ParamMutationSave, ParamRecoverTables, State, Table, TableRow } from "./facades";
+import { findRow, findTable, uuid } from "./helpers";
 
 export default {
   recoverTables(state: State, param: ParamRecoverTables) {
-    state.tables = param.recoveredTables;
+    state.tables = param.tables;
   },
 
   insert(state: State, param: ParamMutationSave) {
-    const table: MutationTable | undefined = findTable(state, param);
-    table?.items.push(param.item);
+    const table: Table | undefined = findTable(state, param);
+    const newRow: TableRow = { id: uuid(), columns: param.tableRow.columns };
+    table?.rows.push(newRow);
   },
 
   update(state: State, param: ParamMutationSave) {
-    const table: MutationTable | undefined = findTable(state, param);
-    const item: MutationItem | undefined = findItemById(table, { tableName: param.tableName, id: param.item.id });
+    const table: Table | undefined = findTable(state, param);
+    const row: TableRow | undefined = findRow(table, { tableName: param.tableName, rowId: param.tableRow.id });
 
-    if (item) {
-      item.columns = param.item.columns;
+    if (row) {
+      row.columns = param.tableRow.columns;
     }
   },
 
   delete(state: State, param: ParamMutationDelete) {
-    const table: MutationTable | undefined = findTable(state, param);
-    const index: number | undefined = table?.items.indexOf(param.item);
+    const table: Table | undefined = findTable(state, param);
+    const index: number | undefined = table?.rows.indexOf(param.tableRow);
 
     if (table && index !== undefined && index > -1) {
-      table.items.splice(index, 1);
+      table.rows.splice(index, 1);
     }
   },
 };

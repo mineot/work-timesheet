@@ -1,36 +1,36 @@
-export interface MutationColumn {
+export interface TableColumn {
   key: string;
   value: any;
 }
 
-export interface MutationItem {
-  id: string;
-  columns: MutationColumn[];
+export interface TableRow {
+  id: string | undefined;
+  columns: TableColumn[];
 }
 
-export interface MutationTable {
+export interface Table {
   name: string;
-  items: MutationItem[];
+  rows: TableRow[];
 }
 
 export interface State {
-  tables: MutationTable[];
+  tables: Table[];
 }
 
-export interface ParamTableName {
+export interface ParamTable {
   tableName: string;
 }
 
-export interface ParamGetById extends ParamTableName {
-  id: string;
+export interface ParamGetRowById extends ParamTable {
+  rowId: string | undefined;
 }
 
 export interface ParamRecoverTables {
-  recoveredTables: MutationTable[];
+  tables: Table[];
 }
 
-export interface ParamMutationSave extends ParamTableName {
-  item: MutationItem;
+export interface ParamMutationSave extends ParamTable {
+  tableRow: TableRow;
 }
 
 export interface ParamMutationDelete extends ParamMutationSave { }

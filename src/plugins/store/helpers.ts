@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { MutationItem, MutationTable, ParamGetById, ParamTableName, State } from "./facades";
+import { ParamGetRowById, ParamTable, State, Table, TableRow } from "./facades";
 
 const dbTables = ["teste"];
 const dbName = "wtsdb";
@@ -9,12 +9,12 @@ const buildTableName = (tableName: string): string => {
   return `${dbName}->${tableName}`;
 };
 
-function findTable(state: State, param: ParamTableName): MutationTable | undefined {
-  return state.tables.find((el: MutationTable) => el.name == param.tableName);
+function findTable(state: State, param: ParamTable): Table | undefined {
+  return state.tables.find((el: Table) => el.name == param.tableName);
 }
 
-function findItemById(table: MutationTable | undefined, param: ParamGetById): MutationItem | undefined {
-  return table?.items.find((el: MutationItem) => el.id = param.id);
+function findRow(table: Table | undefined, param: ParamGetRowById): TableRow | undefined {
+  return table?.rows.find((el: TableRow) => el.id = param.rowId);
 }
 
-export { dbTables, delay, uuid, buildTableName, findTable, findItemById };
+export { dbTables, delay, uuid, buildTableName, findTable, findRow };
