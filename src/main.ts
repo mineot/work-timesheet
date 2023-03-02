@@ -1,11 +1,10 @@
 import { StoreConstants } from "./plugins/store/constants";
-import { Table } from "./plugins/store/facades";
 
 import { createApp } from "vue";
-import I18N from "@plugins/i18n";
-import router from "@plugins/router";
-import store from "@plugins/store";
-import vuetify from "@plugins/vuetify";
+import I18N from "@/plugins/i18n";
+import router from "@/plugins/router";
+import store from "@/plugins/store";
+import vuetify from "@/plugins/vuetify";
 
 import App from "@/App.vue";
 

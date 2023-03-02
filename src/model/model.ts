@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { DB, StoreTable } from "@plugins/database";
+import { DB, StoreTable } from "@/plugins/database";
 
 export interface ModelColumn {
   [name: string]: string;

@@ -40,9 +40,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@plugins': path.resolve(__dirname, './src/plugins'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@model': path.resolve(__dirname, './src/model'),
     },
   },
   plugins: [
