@@ -1,56 +1,31 @@
-import { buildTableName, dbTables, delay, findTable } from "./helpers";
-import { Action, ParamMutationDelete, ParamMutationSave, ParamRecoverTables, ParamTable, Table } from "./facades";
+import { StoreConstants } from "./constants";
+import { State, Table } from "./facades";
+import { restore, store, autoStoreDelay, updateTableDelay } from "./helpers";
+
+export interface Parameter {
+  state: State;
+  commit(name: string, param: any): void;
+  dispatch(name: string, param?: any): void;
+}
 
 export default {
-  initDB: (action: Action): void => {
-    let tables: Table[] = [];
-
-    dbTables.forEach((table: string) => {
-      const tableName: string = buildTableName(table);
-      const jsonData: string | null = localStorage.getItem(tableName);
-
-      if (jsonData) {
-        const parsedData: Table = JSON.parse(jsonData);
-        tables.push(parsedData);
-      }
-    });
-
-    const paramRecoverTables: ParamRecoverTables = { tables };
-    action.commit("recoverTables", paramRecoverTables);
-
-    action.dispatch("autoStoreDB");
+  [StoreConstants.ACTIONS.RESTORE_DB]: (action: Parameter) => {
+    action.commit(StoreConstants.MUTATIONS.RESTORE_DB, restore());
   },
 
-  storeTable(action: Action, param: ParamTable) {
-    let table: Table | undefined = findTable(action.state, param);
-
-    if (!table) {
-      table = { name: param.tableName, rows: [] };
-    }
-
-    const jsonData: string = JSON.stringify(table);
-    localStorage.setItem(buildTableName(param.tableName), jsonData);
+  [StoreConstants.ACTIONS.STORE_DB]: (action: Parameter) => {
+    store(action.state.tables);
   },
 
-  storeDB: (action: Action) => {
-    dbTables.forEach((tableName: string) => {
-      action.dispatch("storeTable", { tableName });
-    });
-  },
-
-  autoStoreDB: (action: Action) => {
+  [StoreConstants.ACTIONS.AUTO_STORE_DB]: (action: Parameter) => {
     setTimeout(() => {
-      action.dispatch("storeDB");
-      action.dispatch("autoStoreDB");
-    }, delay);
+      action.dispatch(StoreConstants.ACTIONS.STORE_DB);
+      action.dispatch(StoreConstants.ACTIONS.AUTO_STORE_DB);
+    }, autoStoreDelay);
   },
 
-  save: (action: Action, param: ParamMutationSave) => {
-    const mutation = param.tableRow.id ? "update" : "insert";
-    action.commit(mutation, param);
-  },
-
-  delete: (action: Action, param: ParamMutationDelete) => {
-    action.commit("delete", param);
-  },
+  [StoreConstants.ACTIONS.UPDATE_TABLE]: (action: Parameter, table: Table) => {
+    action.commit(StoreConstants.MUTATIONS.UPDATE_TABLE, table);
+    setTimeout(() => action.dispatch(StoreConstants.ACTIONS.STORE_DB), updateTableDelay);
+  }
 };

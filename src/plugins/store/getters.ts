@@ -1,13 +1,13 @@
-import { ParamGetRowById, ParamTable, State, Table, TableRow } from "./facades";
-import { findRow, findTable } from "./helpers";
+import { State, Table, TableRow } from "./facades";
+import { StoreConstants } from "./constants";
+
+export interface GetterParameter {
+  tableName: string;
+  rowId?: string;
+}
 
 export default {
-  getTable: (state: State) => (param: ParamTable): Table | undefined => {
-    return findTable(state, param);
-  },
-
-  get: (state: State) => (param: ParamGetRowById): TableRow | undefined => {
-    const table: Table | undefined = findTable(state, param);
-    return findRow(table, param);
+  [StoreConstants.GETTERS.GET_TABLE]: (state: State) => (tableName: string): Table | undefined => {
+    return Object.assign({}, state.tables.find((el: Table) => el.name == tableName));
   },
 };

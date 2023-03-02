@@ -1,32 +1,18 @@
-import { ParamMutationDelete, ParamMutationSave, ParamRecoverTables, State, Table, TableRow } from "./facades";
-import { findRow, findTable, uuid } from "./helpers";
+import { StoreConstants } from "./constants";
+import { State, Table } from "./facades";
 
 export default {
-  recoverTables(state: State, param: ParamRecoverTables) {
-    state.tables = param.tables;
+  [StoreConstants.MUTATIONS.RESTORE_DB]: (state: State, tables: Table[]) => {
+    state.tables = Object.assign([], tables);
   },
 
-  insert(state: State, param: ParamMutationSave) {
-    const table: Table | undefined = findTable(state, param);
-    const newRow: TableRow = { id: uuid(), columns: param.tableRow.columns };
-    table?.rows.push(newRow);
-  },
+  [StoreConstants.MUTATIONS.UPDATE_TABLE]: (state: State, table: Table) => {
+    const index: number = state.tables.findIndex((table: Table) => table.name === table.name);
 
-  update(state: State, param: ParamMutationSave) {
-    const table: Table | undefined = findTable(state, param);
-    const row: TableRow | undefined = findRow(table, { tableName: param.tableName, rowId: param.tableRow.id });
-
-    if (row) {
-      row.columns = param.tableRow.columns;
+    if (index >= 0) {
+      state.tables[index].rows = Object.assign([], table.rows);
+    } else {
+      state.tables.push(table);
     }
-  },
-
-  delete(state: State, param: ParamMutationDelete) {
-    const table: Table | undefined = findTable(state, param);
-    const index: number | undefined = table?.rows.indexOf(param.tableRow);
-
-    if (table && index !== undefined && index > -1) {
-      table.rows.splice(index, 1);
-    }
-  },
+  }
 };

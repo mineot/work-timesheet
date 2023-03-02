@@ -1,20 +1,49 @@
-import { v4 as uuid } from "uuid";
-import { ParamGetRowById, ParamTable, State, Table, TableRow } from "./facades";
+import { Table } from "./facades";
 
-const dbTables = ["teste"];
 const dbName = "wtsdb";
-const delay = 60000;
+const dbTableNames = "wtsdb_table_names";
+const autoStoreDelay = 60000;
+const updateTableDelay = 1000;
 
-const buildTableName = (tableName: string): string => {
+const composeName = (tableName: string): string => {
   return `${dbName}->${tableName}`;
 };
 
-function findTable(state: State, param: ParamTable): Table | undefined {
-  return state.tables.find((el: Table) => el.name == param.tableName);
-}
+const store = (tables: Table[]): void => {
+  const tableNames: string[] = [];
 
-function findRow(table: Table | undefined, param: ParamGetRowById): TableRow | undefined {
-  return table?.rows.find((el: TableRow) => el.id = param.rowId);
-}
+  tables.forEach((table: Table) => {
+    tableNames.push(table.name);
+    localStorage.setItem(composeName(table.name), JSON.stringify(table));
+  });
 
-export { dbTables, delay, uuid, buildTableName, findTable, findRow };
+  localStorage.setItem(dbTableNames, JSON.stringify(tableNames));
+};
+
+const restore = (): Table[] => {
+  const jsonNames: string | null = localStorage.getItem(dbTableNames);
+
+  if (jsonNames === null) {
+    return [];
+  }
+
+  const tableNames: string[] = JSON.parse(jsonNames);
+
+  if (tableNames.length === 0) {
+    return [];
+  }
+
+  const tables: Table[] = [];
+
+  tableNames.forEach((tableName: string) => {
+    const json: string | null = localStorage.getItem(composeName(tableName));
+
+    if (json !== null) {
+      tables.push(JSON.parse(json));
+    }
+  });
+
+  return tables;
+};
+
+export { store, restore, autoStoreDelay, updateTableDelay }; 
